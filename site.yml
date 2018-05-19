@@ -1,0 +1,18 @@
+# Playbook targeting hosts with roles
+---
+- name: apply the common configuration to all hosts
+  hosts: all
+  remote_user: vagrant
+  become: yes
+
+  roles:
+  - common
+
+- name: apply apache and web roles
+  hosts: web
+  remote_user: vagrant
+  become: yes
+
+  roles:
+  - apache
+  - web

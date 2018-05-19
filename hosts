@@ -1,0 +1,9 @@
+[web]
+ansible-web01 ansible_host=192.168.33.10 ansible_ssh_private_key_file=/home/links/ansible/.vagrant/machines/web01/virtualbox/private_key
+ansible-web02 ansible_host=192.168.33.20 ansible_ssh_private_key_file=/home/links/ansible/.vagrant/machines/web02/virtualbox/private_key
+
+[db]
+ansible-db01 ansible_host=192.168.33.30 ansible_ssh_private_key_file=/home/links/ansible/.vagrant/machines/db01/virtualbox/private_key
+
+[all:vars]
+ansible_user=vagrant

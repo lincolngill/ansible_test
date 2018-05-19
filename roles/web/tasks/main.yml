@@ -1,0 +1,29 @@
+---
+- name: install git
+  yum: name=git state=present
+
+- name: checkout lameapp
+  git:
+    repo: https://github.com/jsmartin/lameapp.git
+    version: "{{lameapp_version|string}}"
+    dest: /var/www/lameapp
+    update: no
+
+- name: set permissions on lameapp
+  file: name=/var/www/lameapp/lame.py mode=0755 setype=httpd_sys_script_exec_t
+
+- name: add apache config file
+  copy: src=lameapp.conf dest={{sites_available}}/lameapp.conf
+  notify: restart apache
+
+- name: link app config
+  file: src="{{sites_available}}/lameapp.conf" dest={{sites_enabled}}/lameapp.conf state=link
+
+- meta: flush_handlers
+
+- name: check for proper response
+  uri:
+    url: http://localhost/lame
+    return_content: yes
+  register: result
+  until: '"Hello Moon" in result.content'
