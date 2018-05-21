@@ -5,7 +5,7 @@
 - name: checkout lameapp
   git:
     repo: https://github.com/jsmartin/lameapp.git
-    version: "{{lameapp_version|string}}"
+    version: "{{ lameapp_version|string }}"
     dest: /var/www/lameapp
     update: no
 
@@ -13,11 +13,11 @@
   file: name=/var/www/lameapp/lame.py mode=0755 setype=httpd_sys_script_exec_t
 
 - name: add apache config file
-  copy: src=lameapp.conf dest={{sites_available}}/lameapp.conf
+  copy: src=lameapp.conf dest={{ sites_available }}/lameapp.conf
   notify: restart apache
 
 - name: link app config
-  file: src="{{sites_available}}/lameapp.conf" dest={{sites_enabled}}/lameapp.conf state=link
+  file: src="{{ sites_available }}/lameapp.conf" dest={{ sites_enabled }}/lameapp.conf state=link
 
 - meta: flush_handlers
 

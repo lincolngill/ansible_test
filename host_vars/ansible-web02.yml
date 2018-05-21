@@ -1,0 +1,4 @@
+---
+# ansible-web02
+ansible_host: 192.168.33.20
+ansible_ssh_private_key_file: "{{ inventory_dir }}/.vagrant/machines/web02/virtualbox/private_key"

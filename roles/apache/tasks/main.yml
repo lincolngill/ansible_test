@@ -3,26 +3,28 @@
   yum: name=httpd state=present
 
 - name: create sites directories
-  file: path={{item}} state=directory
-  with_items: "{{apache_dirs}}"
+  file: path={{ item }} state=directory
+  loop: "{{ apache_dirs }}"
 
 - name: copy index.html
-  template: src=index.html.j2 dest={{apache_docroot}}/index.html
+  template: src=index.html.j2 dest={{ apache_docroot }}/index.html
 
 - name: Open http port on firewalld
   firewalld:
     zone: public
-    service: "{{item}}"
+    service: "{{ item }}"
     permanent: true
     state: enabled
-  with_items:
-  - http
-  - https
+  loop:
+    - http
+    - https
   notify: restart firewalld
 
 - name: copy httpd conf
-  template: src=httpd.conf-{{ansible_os_family}}.j2 dest={{apache_config}}
-  notify: restart apache
+  template: src=httpd.conf-{{ ansible_os_family }}.j2 dest={{ apache_config }}
+  #notify: restart apache
+  # Using a topic
+  notify: restart web services
 
 - name: start apache
   service: name=httpd state=started enabled=yes

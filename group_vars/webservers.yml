@@ -10,7 +10,7 @@ apache_config: /etc/httpd/conf/httpd.conf
 sites_available: /etc/httpd/sites-available
 sites_enabled: /etc/httpd/sites-enabled
 apache_dirs:
-- "{{sites_available}}"
-- "{{sites_enabled}}"
+- "{{ sites_available }}"
+- "{{ sites_enabled }}"
 
 lameapp_version: 1.1

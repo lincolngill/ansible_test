@@ -1,6 +1,7 @@
 ---
 - name: restart apache
   service: name=httpd state=restarted
+  listen: "restart web services"
 
 - name: restart firewalld
   service: name=firewalld state=restarted

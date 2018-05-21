@@ -1,9 +1,19 @@
 ---
 - name: install python bindings for SELinux
-  yum: name={{item}} state=present
-  with_items:
-  - libselinux-python
-  - libsemanage-python
+  # This way shows each item in output
+  yum: name={{ item }} state=present
+  loop:
+    - libselinux-python
+    - libsemanage-python
+#  loop_control:
+#    loop_var: pkg
+
+#  # yum module allows a list of packages to be installed as one transaction
+#  yum:
+#    name:
+#      - libselinux-python
+#      - libsemanage-python
+#    state: present
 
 - name: test to see if SeLinux is running
   command: getenforce

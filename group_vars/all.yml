@@ -3,3 +3,5 @@
 
 httpd_port: 80
 ntpserver: 192.168.33.1
+
+ansible_user: vagrant

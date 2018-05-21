@@ -1,18 +1,25 @@
 # Playbook targeting hosts with roles
 ---
 - name: apply the common configuration to all hosts
+  order: sorted
   hosts: all
-  remote_user: vagrant
   become: yes
-
-  roles:
-  - common
+  # Old play level classic roles method
+#  roles:
+#    - common
+  # New (2.4) static import_role task
+  tasks:
+    - debug:
+        msg: "Pre import common role"
+    - import_role:
+        name: common
+    - debug:
+        msg: "Post import common role"
 
 - name: apply apache and web roles
-  hosts: web
-  remote_user: vagrant
+  hosts: webservers
+  order: reverse_sorted
   become: yes
-
   roles:
-  - apache
-  - web
+    - apache
+    - web

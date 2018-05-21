@@ -1,0 +1,22 @@
+---
+# set some local facts
+- name: create fasts.d directory
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+    recurse: yes
+
+- name: create custom fact file
+  copy:
+    src: custom.fact.py
+    dest: /etc/ansible/facts.d/custom.fact
+    mode: 0755
+
+- name: rerun setup for ansible_local
+  setup:
+    filter: ansible_local
+  when: (ansible_local.custom is undefined) or (ansible_local.custom.fqdn is undefined)
+
+- debug:
+    msg: ansible_local.custom.fqdn = {{ ansible_local.custom.fqdn }}
+  when: (ansible_local.custom is defined) and (ansible_local.custom.fqdn is defined)

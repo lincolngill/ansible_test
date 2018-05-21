@@ -2,5 +2,19 @@
 - name: install epel repo
   yum: name=epel-release state=present
 
-- include: selinux.yml
-- include: ntp.yml
+# Old style dynamic include
+#- include: selinux.yml
+#- include: ntp.yml
+
+# New style dynamic include
+#- include_tasks: "{{ item }}"
+#  loop:
+#    - selinux.yml
+#    - ntp.yml
+#    - firewalld.yml
+
+# New style static import - Cannot use variables from inventory sources
+- import_tasks: selinux.yml
+- import_tasks: ntp.yml
+- import_tasks: firewalld.yml
+- import_tasks: facts.yml
