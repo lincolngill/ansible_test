@@ -26,4 +26,5 @@
     url: http://localhost/lame
     return_content: yes
   register: result
+  # loop until - Default retries=3, default delay=5secs
   until: '"Hello Moon" in result.content'

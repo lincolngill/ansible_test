@@ -1,4 +1,6 @@
 # Playbook targeting hosts with roles
+# Multi play playbook
+# 3 dashes "---"" signals the start of the doc. Can have any content. E.g. documentation prior to dashes
 ---
 - name: apply the common configuration to all hosts
   order: sorted

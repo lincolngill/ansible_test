@@ -16,8 +16,12 @@ Inventory file:
 # check connectivity
 ansible all -i hosts -m ping
 # Facts
-ansible db -i hosts -m setup
+ansible dbservers -i hosts -m setup
+# Run a command on a group of servers
+ansible all -i hosts -m command -a 'uptime'
 # Install Apache (as root) - repeat shows idempotent
+# -a - module argument
+# -b - become - run with privilege esculation (default sudo)
 ansible ansible-web01 -i hosts -m yum -a "name=httpd state=present" -b
 # remove package
 ansible ansible-web01 -i hosts -m yum -a "name=httpd state=absent" -b
@@ -32,6 +36,25 @@ a1_playbook:
 
 ```bash
 ansible-playbook -i hosts a1_playbook.yml
+```
+
+A Playbook can contain 1 or more plays.
+
+### Handlers
+Tasks that execute once at end of a play, if notified. E.g.
+```bash
+tasks:
+- name: install ngix
+  yum:
+    name: nginx
+    state: latest
+  notify: restart nginx
+
+handlers:
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
 ```
 
 ## Roles
@@ -81,3 +104,41 @@ Apache role files:
 cd roles
 ansible-galaxy init web
 ```
+
+## Notes from Webinar
+https://www.ansible.com/resources/webinars-training/introduction-to-ansible
+
+Does all these Use Cases:
+* Configuration/State Management - Like Chef, Puppet and CFEngine
+   * Security and compliance
+* Application Deployment - Like Fabric, Capistrano and Nolio
+* Workflow Orchestration - Like BMC, Mcollective and Chef Metal
+* Provisioning - Like Cobbler, AWS and Juju
+   * New VMs or cloud based services
+* Orchestrate the application lifecycle
+   * Continuous Delivery
+
+### Installation
+Preferred
+```bash
+pip install ansible
+```
+
+### How Ansible Works
+Playbooks:
+* Invoke modules, to;
+* Execute tasks in sequence
+
+Inventory:
+* Can come from multiple sources
+
+Plugin: E.g. Support for alternative to ssh or WINRM connections to services.
+
+### Modules
+https://docs.ansible.com/ansible/latest/modules/modules_by_category.html
+
+Command modules:
+* command - Not processed through the shell
+* shell
+* script
+* raw - Raw ssh command - bypasses the python modules mechanism. Good for bootstrap, or Win powershell execution.
